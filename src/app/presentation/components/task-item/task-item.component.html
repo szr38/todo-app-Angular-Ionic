@@ -1,0 +1,31 @@
+<ion-item [class.completed]="task().completed" lines="full">
+  <ion-checkbox
+    slot="start"
+    [checked]="task().completed"
+    (ionChange)="onToggle()"
+    aria-label="Marcar como completada"
+  ></ion-checkbox>
+
+  <ion-label>
+    <h2>{{ task().title }}</h2>
+  </ion-label>
+
+  <ion-select
+    slot="end"
+    class="category-select"
+    interface="popover"
+    [value]="task().categoryId"
+    [style.--background]="categoryBackground()"
+    [style.--color]="categoryColor()"
+    (ionChange)="onCategoryChange($event)"
+    aria-label="Cambiar categoría"
+  >
+    @for (cat of categories(); track cat.id) {
+      <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
+    }
+  </ion-select>
+
+  <ion-button slot="end" fill="clear" color="danger" (click)="onDelete()">
+    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+  </ion-button>
+</ion-item>

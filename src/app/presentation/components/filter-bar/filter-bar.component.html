@@ -1,0 +1,24 @@
+<ion-segment [value]="activeFilter()" (ionChange)="onFilterChange($event)" scrollable>
+  <ion-segment-button [value]="TaskFilter.All">
+    <ion-label>Todas</ion-label>
+  </ion-segment-button>
+
+  <ion-segment-button [value]="TaskFilter.Pending">
+    <ion-label>
+      Pendientes
+      @if (pendingCount() > 0) {
+        <ion-badge color="primary">{{ pendingCount() }}</ion-badge>
+      }
+    </ion-label>
+  </ion-segment-button>
+
+  <ion-segment-button [value]="TaskFilter.Completed">
+    <ion-label>Hechas</ion-label>
+  </ion-segment-button>
+
+  @for (cat of categories(); track cat.id) {
+    <ion-segment-button [value]="cat.id">
+      <ion-label>{{ cat.name }}</ion-label>
+    </ion-segment-button>
+  }
+</ion-segment>

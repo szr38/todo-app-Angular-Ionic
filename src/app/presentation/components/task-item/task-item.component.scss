@@ -1,0 +1,13 @@
+ion-item.completed ion-label h2 {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+ion-select.category-select {
+  --border-radius: 1rem;
+  --padding-start: 0.625rem;
+  --padding-end: 0.625rem;
+  max-width: 6.875rem;
+  font-size: 0.75rem;
+  min-height: 1.75rem;
+}

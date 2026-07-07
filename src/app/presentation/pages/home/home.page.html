@@ -1,0 +1,60 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Mis tareas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mis tareas</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <app-filter-bar
+    [categories]="store.categories()"
+    [activeFilter]="store.filter()"
+    [pendingCount]="store.pendingCount()"
+    (filterChange)="onFilterChange($event)"
+  />
+
+  @if (store.loading()) {
+    <div class="centered">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  } @else if (store.visibleTasks().length === 0) {
+    <div class="centered empty">
+      <ion-text color="medium">
+        <p>No hay tareas</p>
+      </ion-text>
+    </div>
+  } @else {
+    <ion-list>
+      @for (task of store.visibleTasks(); track task.id) {
+        <app-task-item
+          [task]="task"
+          [categories]="store.categories()"
+          (toggled)="store.toggleTask($event)"
+          (deleted)="store.removeTask($event)"
+          (categoryChanged)="store.updateCategory($event.task, $event.categoryId)"
+        />
+      }
+    </ion-list>
+  }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-modal [isOpen]="showModal" (didDismiss)="closeModal()">
+  <ng-template>
+    <app-add-task-modal
+      [categories]="store.categories()"
+      (dismissed)="closeModal()"
+      (saved)="onTaskSaved($event)"
+    />
+  </ng-template>
+</ion-modal>

@@ -1,0 +1,19 @@
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem;
+}
+
+.empty {
+  flex-direction: column;
+  text-align: center;
+
+  p {
+    margin: 0.25rem 0;
+  }
+}
+
+ion-list {
+  padding-bottom: 5rem;
+}

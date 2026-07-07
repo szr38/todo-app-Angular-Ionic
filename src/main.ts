@@ -4,11 +4,14 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { TaskMemoryRepository } from './app/core/task-memory.repository';
+import { TaskRepository } from './app/domain/repositories/task.repository';
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
+    { provide: TaskRepository, useClass: TaskMemoryRepository },
   ],
 });

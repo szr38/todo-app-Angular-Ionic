@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nueva tarea</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onDismiss()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-input
+      label="¿Qué necesitas hacer?"
+      labelPlacement="stacked"
+      placeholder="Ej: Hacer mercado"
+      [value]="title()"
+      (ionInput)="onTitleChange($event)"
+      (keyup.enter)="onSave()"
+    ></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-select
+      label="Categoría"
+      labelPlacement="stacked"
+      placeholder="Elige una"
+      [value]="categoryId()"
+      (ionChange)="onCategoryChange($event)"
+    >
+      @for (cat of categories(); track cat.id) {
+        <ion-select-option [value]="cat.id">{{ cat.name }}</ion-select-option>
+      }
+    </ion-select>
+  </ion-item>
+
+  <ion-button expand="block" class="save-btn" (click)="onSave()">
+    <ion-icon slot="start" name="add-outline"></ion-icon>
+    Agregar
+  </ion-button>
+</ion-content>
