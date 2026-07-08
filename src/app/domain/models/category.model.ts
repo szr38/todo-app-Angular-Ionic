@@ -10,17 +10,12 @@ export interface Category {
   color: string;
 }
 
-const CATEGORY_META: Record<CategoryId, Pick<Category, 'name' | 'color'>> = {
-  [CategoryId.Personal]: { name: 'Personal', color: '#2563eb' },
-  [CategoryId.Work]: { name: 'Trabajo', color: '#0891b2' },
-  [CategoryId.Shopping]: { name: 'Compras', color: '#16a34a' },
-};
-
-export const DEFAULT_CATEGORIES: Category[] = Object.values(CategoryId).map((id) => ({
-  id,
-  ...CATEGORY_META[id],
-}));
+export const DEFAULT_CATEGORIES: Category[] = [
+  { id: CategoryId.Personal, name: 'Personal', color: '#2563eb' },
+  { id: CategoryId.Work, name: 'Trabajo', color: '#0891b2' },
+  { id: CategoryId.Shopping, name: 'Compras', color: '#16a34a' },
+];
 
 export function isCategoryId(value: string): value is CategoryId {
-  return Object.values(CategoryId).includes(value as CategoryId);
+  return (Object.values(CategoryId) as string[]).includes(value);
 }

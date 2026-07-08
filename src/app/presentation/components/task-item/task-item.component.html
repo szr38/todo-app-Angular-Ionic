@@ -13,7 +13,9 @@
   <ion-select
     slot="end"
     class="category-select"
-    interface="popover"
+    interface="modal"
+    [interfaceOptions]="categorySelectOptions"
+    cancelText="Cancelar"
     [value]="task().categoryId"
     [style.--background]="categoryBackground()"
     [style.--color]="categoryColor()"

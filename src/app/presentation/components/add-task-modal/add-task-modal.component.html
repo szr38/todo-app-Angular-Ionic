@@ -26,6 +26,9 @@
       label="Categoría"
       labelPlacement="stacked"
       placeholder="Elige una"
+      interface="modal"
+      [interfaceOptions]="categorySelectOptions"
+      cancelText="Cancelar"
       [value]="categoryId()"
       (ionChange)="onCategoryChange($event)"
     >

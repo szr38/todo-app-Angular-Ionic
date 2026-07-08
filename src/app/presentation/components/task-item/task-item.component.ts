@@ -12,6 +12,7 @@ import { addIcons } from 'ionicons';
 import { trashOutline } from 'ionicons/icons';
 
 import { Category, CategoryId, isCategoryId } from '../../../domain/models/category.model';
+import { CATEGORY_SELECT_OPTIONS } from '../../constants/category-select.constants';
 import { Task } from '../../../domain/models/task.model';
 
 @Component({
@@ -29,6 +30,8 @@ import { Task } from '../../../domain/models/task.model';
   ],
 })
 export class TaskItemComponent {
+  readonly categorySelectOptions = CATEGORY_SELECT_OPTIONS;
+
   task = input.required<Task>();
   categories = input<Category[]>([]);
 

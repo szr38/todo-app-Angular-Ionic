@@ -1,15 +1,32 @@
-<ion-header [translucent]="true">
+<ng-template #homeToolbar let-large="large">
   <ion-toolbar>
-    <ion-title>Mis tareas</ion-title>
+    <ion-title [size]="large ? 'large' : undefined">Mis tareas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        (click)="toggleCloudSync()"
+        [attr.aria-label]="store.cloudSyncEnabled() ? 'Desactivar sincronización en la nube' : 'Activar sincronización en la nube'"
+        [color]="store.cloudSyncEnabled() ? 'primary' : 'medium'"
+        fill="clear"
+      >
+        <ion-icon
+          slot="icon-only"
+          [name]="store.cloudSyncEnabled() ? 'cloud' : 'cloud-offline'"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+</ng-template>
+
+<ion-header [translucent]="true">
+  <ng-container *ngTemplateOutlet="homeToolbar" />
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Mis tareas</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  @if (isIos) {
+    <ion-header collapse="condense">
+      <ng-container *ngTemplateOutlet="homeToolbar; context: { large: true }" />
+    </ion-header>
+  }
 
   <app-filter-bar
     [categories]="store.categories()"
@@ -34,15 +51,15 @@
         <app-task-item
           [task]="task"
           [categories]="store.categories()"
-          (toggled)="store.toggleTask($event)"
-          (deleted)="store.removeTask($event)"
-          (categoryChanged)="store.updateCategory($event.task, $event.categoryId)"
+          (toggled)="onTaskToggled($event)"
+          (deleted)="onTaskDeleted($event)"
+          (categoryChanged)="onCategoryChanged($event.task, $event.categoryId)"
         />
       }
     </ion-list>
   }
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="fab-safe-area">
     <ion-fab-button (click)="openModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>

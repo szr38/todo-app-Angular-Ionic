@@ -6,7 +6,7 @@ import { TaskRepository } from '../repositories/task.repository';
 
 @Injectable({ providedIn: 'root' })
 export class ManageTasksUseCase {
-  constructor(private readonly repo: TaskRepository) {}
+  constructor(private repo: TaskRepository) {}
 
   loadAll() {
     return Promise.all([this.repo.getTasks(), this.repo.getCategories()]);
@@ -26,5 +26,9 @@ export class ManageTasksUseCase {
 
   changeCategory(task: Task, categoryId: CategoryId) {
     return this.repo.updateTask({ ...task, categoryId });
+  }
+
+  toggleCloudSync() {
+    return this.repo.toggleCloudSync();
   }
 }

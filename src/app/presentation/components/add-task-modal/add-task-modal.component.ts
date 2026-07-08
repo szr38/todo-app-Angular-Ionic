@@ -17,6 +17,7 @@ import { addIcons } from 'ionicons';
 import { closeOutline, addOutline } from 'ionicons/icons';
 
 import { Category, CategoryId, isCategoryId } from '../../../domain/models/category.model';
+import { CATEGORY_SELECT_OPTIONS } from '../../constants/category-select.constants';
 @Component({
   selector: 'app-add-task-modal',
   templateUrl: './add-task-modal.component.html',
@@ -37,6 +38,8 @@ import { Category, CategoryId, isCategoryId } from '../../../domain/models/categ
   ],
 })
 export class AddTaskModalComponent {
+  readonly categorySelectOptions = CATEGORY_SELECT_OPTIONS;
+
   categories = input<Category[]>([]);
 
   dismissed = output<void>();

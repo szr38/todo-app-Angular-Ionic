@@ -8,8 +8,10 @@ export enum TaskFilter {
 
 export type TaskListFilter = TaskFilter | CategoryId;
 
+const TASK_FILTERS = new Set<string>(Object.values(TaskFilter));
+
 export function isTaskFilter(value: string): value is TaskFilter {
-  return Object.values(TaskFilter).includes(value as TaskFilter);
+  return TASK_FILTERS.has(value);
 }
 
 export function isTaskListFilter(value: string): value is TaskListFilter {

@@ -3,7 +3,6 @@ import { Task } from '../domain/models/task.model';
 
 const DAY = 86_400_000;
 
-/** Tareas de ejemplo para desarrollo y pruebas manuales. No se cargan en producción. */
 export const TEST_TASKS: Task[] = [
   {
     id: 'test-001',

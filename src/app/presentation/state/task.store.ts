@@ -1,5 +1,6 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 
+import { FeatureFlagService } from '../../core/feature-flag.service';
 import { Category, CategoryId } from '../../domain/models/category.model';
 import { Task } from '../../domain/models/task.model';
 import { FilterTasksUseCase, TaskFilter, TaskListFilter } from '../../domain/usecases/filter-tasks.usecase';
@@ -7,28 +8,30 @@ import { ManageTasksUseCase } from '../../domain/usecases/manage-tasks.usecase';
 
 @Injectable({ providedIn: 'root' })
 export class TaskStore {
-  private readonly _tasks = signal<Task[]>([]);
-  private readonly _categories = signal<Category[]>([]);
-  private readonly _filter = signal<TaskListFilter>(TaskFilter.All);
-  private readonly _loading = signal(true);
+  private manageTasks = inject(ManageTasksUseCase);
+  private filterTasks = inject(FilterTasksUseCase);
+  private featureFlags = inject(FeatureFlagService);
 
-  readonly tasks = this._tasks.asReadonly();
-  readonly categories = this._categories.asReadonly();
-  readonly filter = this._filter.asReadonly();
-  readonly loading = this._loading.asReadonly();
+  private _tasks = signal<Task[]>([]);
+  private _categories = signal<Category[]>([]);
+  private _filter = signal<TaskListFilter>(TaskFilter.All);
+  private _loading = signal(true);
 
-  readonly visibleTasks = computed(() =>
-    this.filterUseCase.apply(this._tasks(), this._filter()),
-  );
+  tasks = this._tasks.asReadonly();
+  categories = this._categories.asReadonly();
+  filter = this._filter.asReadonly();
+  loading = this._loading.asReadonly();
+  cloudSyncEnabled = this.featureFlags.cloudSync;
 
-  readonly pendingCount = computed(
-    () => this._tasks().filter((t) => !t.completed).length,
-  );
+  visibleTasks = computed(() => this.filterTasks.apply(this._tasks(), this._filter()));
 
-  constructor(
-    private readonly manageTasks: ManageTasksUseCase,
-    private readonly filterUseCase: FilterTasksUseCase,
-  ) {}
+  pendingCount = computed(() => {
+    let n = 0;
+    for (const t of this._tasks()) {
+      if (!t.completed) n++;
+    }
+    return n;
+  });
 
   async init() {
     this._loading.set(true);
@@ -49,9 +52,7 @@ export class TaskStore {
 
   async toggleTask(task: Task) {
     const updated = await this.manageTasks.toggleComplete(task);
-    this._tasks.update((list) =>
-      list.map((t) => (t.id === updated.id ? updated : t)),
-    );
+    this._tasks.update((list) => list.map((t) => (t.id === updated.id ? updated : t)));
   }
 
   async removeTask(id: string) {
@@ -61,8 +62,12 @@ export class TaskStore {
 
   async updateCategory(task: Task, categoryId: CategoryId) {
     const updated = await this.manageTasks.changeCategory(task, categoryId);
-    this._tasks.update((list) =>
-      list.map((t) => (t.id === updated.id ? updated : t)),
-    );
+    this._tasks.update((list) => list.map((t) => (t.id === updated.id ? updated : t)));
+  }
+
+  async toggleCloudSync() {
+    const { tasks, syncFailed } = await this.manageTasks.toggleCloudSync();
+    this._tasks.set(tasks);
+    return syncFailed;
   }
 }

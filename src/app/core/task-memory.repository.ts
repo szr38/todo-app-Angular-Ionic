@@ -40,4 +40,8 @@ export class TaskMemoryRepository extends TaskRepository {
     this.tasks = this.tasks.filter((task) => task.id !== id);
     return Promise.resolve();
   }
+
+  toggleCloudSync() {
+    return this.getTasks().then((tasks) => ({ tasks, syncFailed: false }));
+  }
 }

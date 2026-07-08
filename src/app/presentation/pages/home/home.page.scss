@@ -15,5 +15,9 @@
 }
 
 ion-list {
-  padding-bottom: 5rem;
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+}
+
+.fab-safe-area {
+  margin-bottom: env(safe-area-inset-bottom);
 }

@@ -7,4 +7,5 @@ export abstract class TaskRepository {
   abstract addTask(task: NewTask): Promise<Task>;
   abstract updateTask(task: Task): Promise<Task>;
   abstract deleteTask(id: string): Promise<void>;
+  abstract toggleCloudSync(): Promise<{ tasks: Task[]; syncFailed: boolean }>;
 }

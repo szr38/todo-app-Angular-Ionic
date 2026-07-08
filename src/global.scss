@@ -35,3 +35,18 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+html,
+body {
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+ion-content {
+  --padding-bottom: env(safe-area-inset-bottom);
+}
+
+ion-modal ion-content {
+  --keyboard-offset: env(safe-area-inset-bottom);
+}
